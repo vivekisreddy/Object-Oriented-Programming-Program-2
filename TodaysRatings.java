@@ -1,30 +1,59 @@
+import sun.awt.image.ImageWatched;
+
 import java.util.LinkedList;
+import java.util.GregorianCalendar;
 
-public class TodaysRatingsLL implements ISet {
+public class TodaysRatings {
 
-    private LinkedList allRatings = new LinkedList<TodaysRatings>();
+    private GregorianCalendar date;
 
-    TodaysRatingsLL(LinkedList<TodaysRatings> allRatings) {
-        this.allRatings = allRatings;
-    }
+    private LinkedList<Integer> rankingsOfSurveys;
 
-    @Override
-    public int bestRankThisMonth() {
-        return 0;
-    }
+    private LinkedList<Integer> downloadsOfSurveys;
 
-    @Override
-    public int totalSongDownloads(int month, int year) {
-        return 0;
-    }
 
-    @Override
-    public void addTodaysSurveys(LinkedList<Survey> surveyLinkedList) {
+    // Constructing a date for daily ratings
+
+    public TodaysRatings(GregorianCalendar date, LinkedList<Integer> rankingsOfSurveys, LinkedList<Integer> downloadsOfSurveys) {
+        this.date = date;
+        this.rankingsOfSurveys = rankingsOfSurveys;
+        this.downloadsOfSurveys = downloadsOfSurveys;
 
     }
-    @Override
-    public void add(TodaysRatings todaysRatings) {
 
+    public boolean compareMonth(int month)  {
+        return this.date.get(GregorianCalendar.MONTH) == month;
+    }
+    public boolean compareMonth(TodaysRatings rating)  {
+        return this.date.get(GregorianCalendar.MONTH) == rating.date.get(GregorianCalendar.MONTH);
+    }
+
+    public boolean compareYear(int year)  {
+        return this.date.get(GregorianCalendar.YEAR) == year;
+    }
+    public boolean compareYear(TodaysRatings rating)  {
+        return this.date.get(GregorianCalendar.YEAR) == rating.date.get(GregorianCalendar.YEAR);
+    }
+
+    public int rankingOfSurveyIterator() {
+        int runningMin = -1;
+        for (int rank : this.rankingsOfSurveys) {
+
+            if (runningMin > rank) {
+                runningMin = rank;
+            }
+        }
+        return runningMin;
+    }
+
+    public int downloadsOfSurveyIterator() {
+        int runningTotal = 0;
+        for (int downloads : this.downloadsOfSurveys) {
+            if (runningTotal >= 0) {
+                runningTotal = runningTotal + downloads;
+            }
+        }
+        return runningTotal;
     }
 
 }
